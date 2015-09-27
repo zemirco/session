@@ -22,20 +22,21 @@
 package session
 
 import (
-	"github.com/gorilla/sessions"
 	"net/http"
+
+	"github.com/gorilla/sessions"
 )
 
 // Make session secret, cookie store and session name configurable
 var (
-	SECRET = "something-very-secret"
-	STORE  = sessions.NewCookieStore([]byte(SECRET))
-	NAME   = "session"
+	Secret = "something-very-secret"
+	Store  = sessions.NewCookieStore([]byte(Secret))
+	Name   = "session"
 )
 
 // Set creates a new session with given key and value.
 func Set(w http.ResponseWriter, r *http.Request, key, value interface{}) error {
-	sess, err := STORE.Get(r, NAME)
+	sess, err := Store.Get(r, Name)
 	if err != nil {
 		return err
 	}
@@ -45,7 +46,7 @@ func Set(w http.ResponseWriter, r *http.Request, key, value interface{}) error {
 
 // Get returns the session value for given key.
 func Get(r *http.Request, key string) (interface{}, error) {
-	sess, err := STORE.Get(r, NAME)
+	sess, err := Store.Get(r, Name)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +55,7 @@ func Get(r *http.Request, key string) (interface{}, error) {
 
 // Destroy removes session cookie by setting MaxAge to a value in the past.
 func Destroy(w http.ResponseWriter, r *http.Request) error {
-	sess, err := STORE.Get(r, NAME)
+	sess, err := Store.Get(r, Name)
 	if err != nil {
 		return err
 	}
